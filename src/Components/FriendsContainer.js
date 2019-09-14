@@ -146,8 +146,8 @@ class FriendsContainerComponent extends Component {
               <div style={{width:"100%", color:"grey", backgroundColor:"white", textAlign:"left", paddingLeft:20,  height:30, borderWidth:"0px 0px 1px 0px", borderStyle:"solid", borderColor:"rgba(230,230,230,1)"}}>My Friends
               </div>
             </div>
-            {this.props.accountState.friends.map((friend, index)=>
-              <FriendItem friend={friend} alreadyFriend={true} index={index} onClick={(friend)=>this.toggleFriend(friend, this)}  deletePossible={true}
+            {this.props.accountState.friends.map((friendObject, index)=>
+              <FriendItem friend={friendObject} alreadyFriend={true} index={index} onClick={(friend)=>this.toggleFriend(friend, this)}  deletePossible={true}
               alreadyFriend={this.state.tabOfIdOfFriendsAreadyFriends.map((friend)=>(friend.id)).includes(friendObject.id)}></FriendItem>
               )
             }

@@ -54,7 +54,7 @@ export class LoginComponent extends React.Component {
       if(this.state.password.length === 0){
           return;
       }
-      this.props.login(this.state.email, "bet on")
+      this.props.login(this.state.email, this.state.password)
   }
 
   handleChange = event => {

@@ -136,15 +136,16 @@ class BetMakeComponent extends Component {
 
 
       let id = '_' + Math.random().toString(36).substr(2, 9);
-
+      console.log("listOfFriends")
+      console.log(listOfFriends.map((friend)=>({id:friend.id, accepted:undefined})))
       let newBet={
         id:id,
         title:this.state.titleOfBet,
         issue:this.state.issueOfBet,
         expiration:expirationDate,
         creation:today,
-        players1:[this.props.accountState.account.id],
-        players2:listOfFriends.map((friend)=>(friend.id)),
+        players1:[{id:this.props.accountState.account.id, accepted:true}],
+        players2:listOfFriends.map((friend)=>({id:friend.id, accepted:undefined})),
         win:false,
         witness:witness.id,
         current:true,

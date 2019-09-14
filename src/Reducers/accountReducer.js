@@ -1,4 +1,4 @@
-import { SET_ACCOUNTSTATE, CONNECT, SET_NEW_BET, SET_BET_SELECTED, SET_BET_INACTIVE, SET_WINNER, SET_FRIENDSSTATE, GET_USERBETS, GET_USERFRIENDS, RESET_ACCOUNTSTATE, GET_USERWITNESSOF, UPDATE_WITNESSOF  } from "../Constants/action-types";
+import { SET_ACCOUNTSTATE, CONNECT, SET_NEW_BET, SET_BET_SELECTED, SET_BET_INACTIVE, SET_WINNER, SET_FRIENDSSTATE, GET_USERBETS, GET_USERFRIENDS, RESET_ACCOUNTSTATE, GET_USERWITNESSOF, UPDATE_WITNESSOF, ACCEPT_BET  } from "../Constants/action-types";
 
 const initialState = {
   connectedRedux:false,
@@ -77,19 +77,19 @@ const initialState = {
       },
     ],
     bets:[
-        {
+        {bet:{
         id : "78337",
         title:"je gagne tous mes paris",
         issue:"1 kebab",
         expiration:"10/12/2015",
         creation:"10/12/2015",
-        players1:["515313"],
+        players1:[{id:"515313", accepted:undefined}],
         players2:["65161", "51651"],
         win: true,
         current:false,
         witness:"5646846"
-        },
-        {
+      },accepted:true},
+        {bet:{
         id : "51351",
         title:"je gagne tous mes paris",
         issue:"1 kebab",
@@ -100,8 +100,8 @@ const initialState = {
         win: true,
         current:true,
         witness:"5646846"
-        },
-        {
+        },accepted:true},
+        {bet:{
         id : "511",
         title:"je gagne tous mes paris",
         issue:"1 kebab",
@@ -112,8 +112,8 @@ const initialState = {
         win: true,
         current:false,
         witness:"5646846"
-        },
-        {
+        },accepted:true},
+        {bet:{
         id : "897",
         title:"je gagne tous mes paris",
         issue:"1 kebab",
@@ -124,8 +124,8 @@ const initialState = {
         win: false,
         current:true,
         witness:"5646846"
-        },
-        {
+        },accepted:true},
+        {bet:{
         id : "5661",
         title:"je gagne tous mes paris",
         issue:"1 kebab",
@@ -136,7 +136,7 @@ const initialState = {
         win: true,
         current:false,
         witness:"5646846"
-        },
+        },accepted:true},
       ]
     }
 }
@@ -218,7 +218,7 @@ function accountReducer(state = initialState, action) {
             ...state,
             accountState: newAccountState
           }
-          console.log(action.tabOfBets)
+          //console.log(action.tabOfBets)
         return nextState || state
     break;
 
@@ -261,6 +261,23 @@ function accountReducer(state = initialState, action) {
             ...state,
             accountStateRedux: newAccountState
           }
+        return nextState || state
+    break;
+
+    case ACCEPT_BET:
+          newAccountState = state.accountStateRedux
+
+          newAccountState.account = action.newAccount
+          for (var i = 0; i < newAccountState.bets.length; i++) {
+            if(newAccountState.bets[i].id === action.newBet.id){
+              newAccountState.bets[i] = action.newBet
+            }
+          }
+          nextState = {
+            ...state,
+            accountStateRedux: newAccountState
+          }
+          console.log(newAccountState)
         return nextState || state
     break;
 

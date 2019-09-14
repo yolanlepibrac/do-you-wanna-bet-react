@@ -7,6 +7,8 @@ import YolanHeder from './Components/YolanHeader';
 import AppContainer from './Components/AppContainer';
 import NoAccount from './Components/NoAccount';
 
+import { connect } from "react-redux";
+
 import { changeAccountState } from "./Actions/index";
 import { displayLoading } from "./Actions/index";
 import { getUserFriends } from "./Actions/index";
@@ -42,13 +44,34 @@ class AppComponent extends React.Component {
 
   componentDidMount = () => {
     if(localStorage.connected === "true" && localStorage.email.length>0 && localStorage.email !== "undefined"){
-      this.login(localStorage.email, localStorage.onglet);
+      //this.loginAleadyConected(localStorage.email, localStorage.onglet);
     }
   }
 
+  login = (email, password) => {
+    var log = new Promise((resolve, reject)=>{
+      API.login(email, password).then((dataCurrentUser)=>{
+        console.log(dataCurrentUser)
+        this.props.changeAccountState(dataCurrentUser.data.user.userData);
+        this.props.getUserFriends(dataCurrentUser.data.user.friends);
+        this.props.getUserBets(dataCurrentUser.data.user.bets);
+        this.props.getUserWitnessOf(dataCurrentUser.data.user.witnessOf);
+        resolve(true)
+      })
+    })
+    log.then(()=>{
+      this.setState({
+        displayLoading:false,
+        onglet : "bet on",
+        connected:true,
+        email:email,
+      })
+      localStorage.setItem("connected" , true)
+      localStorage.setItem("email" , email)
+    })
+  }
 
-
-  login = (email, onglet) => {
+  loginAleadyConected = (email, onglet) => {
     console.log(email);
     console.log(onglet);
     this.setState({displayLoading:true})
@@ -71,7 +94,6 @@ class AppComponent extends React.Component {
           API.getUsersDataByID(dataCurrentUser.data.userData.witnessOf).then((dataWitnessOf)=>{
             console.log(dataWitnessOf.data.usersData)
             this.props.getUserWitnessOf(dataWitnessOf.data.usersData);
-            this.login(this.state.email)
             this.setState({
               displayLoading:false,
               onglet : onglet,

@@ -8,6 +8,7 @@ import { setBetInactive } from "../Actions/index";
 import { setWinner } from "../Actions/index";
 import API from '../Utils/API';
 import { updtateWitnessOf } from "../Actions/index";
+import { acceptBet } from "../Actions/index";
 import Spinner from 'react-bootstrap/Spinner'
 
 
@@ -17,6 +18,7 @@ const sizeIconMobile = 40;
 function mapDispatchToProps(dispatch) {
   return {
     setSheetSelected: (nameSheet) => dispatch(setSheetSelected(nameSheet)),
+    acceptBet: (betID, accepted) => dispatch(acceptBet(betID, accepted)),
     setBetInactive : (betID) => dispatch(setBetInactive(betID)),
     setWinner : (betID, accountID) => dispatch(setWinner(betID, accountID)),
     updtateWitnessOf: (tabOfWitnessOf) => dispatch(updtateWitnessOf(tabOfWitnessOf)),
@@ -55,9 +57,22 @@ class BetItemDetailComponent extends Component {
         })
       }
     }
-    if(this.props.bet.witness.id === this.props.accountState.account.id){
+    if(this.props.bet.witness.user.id === this.props.accountState.account.id){
       this.setState({judingAllow : true})
     }
+
+    let accepted = undefined;
+    for (var i = 0; i < this.props.bet.players1.length; i++) {
+      if(this.props.bet.players1[i].user.id = this.props.accountState.account.id){
+        accepted = this.props.bet.players1[i].user.accepted
+      }
+    }
+    for (var i = 0; i < this.props.bet.players2.length; i++) {
+      if(this.props.bet.players2[i].user.id = this.props.accountState.account.id){
+        accepted = this.props.bet.players2[i].user.accepted
+      }
+    }
+    this.setState({accepted:accepted})
   }
 
 
@@ -113,6 +128,58 @@ class BetItemDetailComponent extends Component {
     }
   }
 
+  accept = (accepted) => {
+    let newAccountState = this.props.accountState
+    let newBet = {}
+    let newAccount = {}
+    let uniqueBet = {}
+    for (var i = 0; i < newAccountState.account.bets.length; i++) {
+      if(typeof newAccountState.account.bets[i] === "string"){
+        newAccountState.account.bets[i] = {id:newAccountState.account.bets[i], accepted:undefined}
+      }
+      if(newAccountState.account.bets[i].id === this.props.bet.id){
+        newAccountState.account.bets[i].accepted = accepted;
+        newAccount = newAccountState.account
+        uniqueBet = newAccountState.account.bets[i]
+      }
+    }
+    for (var i = 0; i < newAccountState.bets.length; i++) {
+      if(newAccountState.bets[i].id === this.props.bet.id){
+        for (var j = 0; j < newAccountState.bets[i].players1.length; j++) {
+          if(typeof newAccountState.bets[i].players1[j] === "string"){
+            newAccountState.bets[i].players1[j] = {id:newAccountState.bets[i].players1[j], accepted:undefined}
+          }
+          if(newAccountState.bets[i].players1[j].id === newAccountState.account.id){
+            newAccountState.bets[i].players1[j].accepted = accepted;
+            newBet = newAccountState.bets[i]
+          }
+        }
+        for (var j = 0; j < newAccountState.bets[i].players2.length; j++) {
+          if(typeof newAccountState.bets[i].players2[j] === "string"){
+            newAccountState.bets[i].players2[j] = {id:newAccountState.bets[i].players2[j], accepted:undefined}
+          }
+          if(newAccountState.bets[i].players2[j].id === newAccountState.account.id){
+            newAccountState.bets[i].players2[j].accepted = accepted;
+            newBet = newAccountState.bets[i]
+          }
+        }
+      }
+    }
+
+    this.props.acceptBet(newAccount, newBet);
+    API.acceptBet(newAccount, newBet, accepted).then((data)=>{
+      console.log(data.data)
+      console.log("is update")
+    })
+  }
+
+  noteFriend = () => {
+    API.noteFriend(this.props.accountState.account.id, "_5dufptcbs", 2).then((res)=>{
+      console.log(res.data)
+    })
+  }
+
+
   render(){
     if(!this.props.bet){
       return(
@@ -135,7 +202,7 @@ class BetItemDetailComponent extends Component {
           <div style={{width:"100vw", textAlign:"left", color:"black", fontSize:15, display:"flex", justifyContent:"space-between", alignItems:"center",  paddingLeft:20, paddingRight:20, height:80}}>
             <div style={{display:"flex", flexDirection:"column", justifyContent:"space-between", alignItems:"flex-start"}}>
               {this.props.bet.witness ?
-                <strong style={{height:20, display:"flex", alignItems:"center"}}>{"Judge : " + this.props.bet.witness.userName}</strong>
+                <strong style={{height:20, display:"flex", alignItems:"center"}}>{"Judge : " + this.props.bet.witness.user.userName}</strong>
                 :null
               }
               <div style={{height:20, display:"flex", alignItems:"center"}}>{"creation : " + this.props.bet.creation}</div>
@@ -148,7 +215,7 @@ class BetItemDetailComponent extends Component {
             </div>
             {this.props.bet.witness ?
               <div style={{display:"flex", flexDirection:"column", justifyContent:"space-between", alignItems:"center", width:70, backgroundSize:"cover"}}>
-                <div  style={{cursor:"pointer", borderWidth:0, borderStyle:"solid", borderRadius:"50%", border:"1px solid rgba(155,155,155,0.4)", width:70, height:70, backgroundImage:"url(" + this.props.bet.witness.imageProfil + ")", backgroundSize:"cover"}}></div>
+                <div  style={{cursor:"pointer", borderWidth:0, borderStyle:"solid", borderRadius:"50%", border:"1px solid rgba(155,155,155,0.4)", width:70, height:70, backgroundImage:"url(" + this.props.bet.witness.user.imageProfil + ")", backgroundSize:"cover"}}></div>
               </div>
               :null
             }
@@ -164,8 +231,8 @@ class BetItemDetailComponent extends Component {
               onClick={this.setWin}>
                 {this.props.bet.players1.map((player)=>
                     <div style={{display:"flex", width:"100%", padding:10}}>
-                      <img width={50} height={50} src={player.imageProfil} style={{cursor:"pointer", borderWidth:0, borderStyle:"solid", borderRadius:"50%"}}/>
-                      <div style={{height:50, display:"flex", alignItems:"center", justifyContent:"center", width:"100%"}}>{player.userName}</div>
+                      <img width={50} height={50} src={player.user.imageProfil} style={{cursor:"pointer", borderWidth:0, borderStyle:"solid", borderRadius:"50%"}}/>
+                      <div style={{height:50, display:"flex", alignItems:"center", justifyContent:"center", width:"100%"}}>{player.user.userName}</div>
                     </div>
                 )}
               </div>
@@ -173,13 +240,17 @@ class BetItemDetailComponent extends Component {
               onClick={this.setLoose}>
                 {this.props.bet.players2.map((player)=>
                   <div style={{display:"flex", width:"100%", padding:10}}>
-                    <img width={50} height={50} src={player.imageProfil} style={{cursor:"pointer", borderWidth:0, borderStyle:"solid", borderRadius:"50%"}}/>
-                    <div style={{height:50, display:"flex", alignItems:"center", justifyContent:"center", width:"100%"}}>{player.userName}</div>
+                    <img width={50} height={50} src={player.user.imageProfil} style={{cursor:"pointer", borderWidth:0, borderStyle:"solid", borderRadius:"50%"}}/>
+                    <div style={{height:50, display:"flex", alignItems:"center", justifyContent:"center", width:"100%"}}>{player.user.userName}</div>
                   </div>
                 )}
               </div>
             </div>
           </div>
+          {  this.state.accepted !== true && this.state.accepted !== false ?
+              <div onClick={()=>this.noteFriend()}>Accept</div>
+              :null
+          }
 
           {this.state.judingAllow && this.state.judgmentMade?
             <div>

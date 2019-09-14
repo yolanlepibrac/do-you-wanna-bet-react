@@ -11,6 +11,7 @@ const burl = "https://do-you-wanna-bet.herokuapp.com"
 
 export default {
     login : function(email,password) {
+      console.log(email)
         return axios.post(burl + '/user/login',{'email' : email,'password' : password},{headers: headers})
     },
     signup : function(send){
@@ -59,5 +60,11 @@ export default {
     },
     setWinner:function(bet, win){
       return axios.post(burl + '/user/setWinner',{'bet' : bet,'win' : win,},{headers: headers})
-    }
+    },
+    acceptBet:function(userData, bet, accepted){
+      return axios.post(burl + '/user/acceptBet',{"userID":userData.id, "betID":bet.id, "accepted":accepted },{headers: headers})
+    },
+    noteFriend:function(friendNoteGiver, friendNoted, note){
+      return axios.post(burl + '/user/noteFriend',{"note":note, "friendNoted":friendNoted, "friendNoteGiver":friendNoteGiver },{headers: headers})
+    },
 }

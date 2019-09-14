@@ -30,6 +30,7 @@ class BetItemComponent extends Component {
       witnessIsLoad : false,
       imTheWitness : false,
       iWon : false,
+      acceptedByMe:undefined,
      }
   }
 
@@ -38,24 +39,52 @@ class BetItemComponent extends Component {
         var newTabOfFriendID = [];
         var copiedTabOfFriendID = [];
         Object.assign(copiedTabOfFriendID, tabOfFriendID);
-        console.log(copiedTabOfFriendID)
+
+
         for (var i = 0; i < copiedTabOfFriendID.length; i++) {
-          if(copiedTabOfFriendID[i] === this.props.accountState.account.id){
-            newTabOfFriendID.push(this.props.accountState.account);
+          if(copiedTabOfFriendID[i]===undefined ||copiedTabOfFriendID[i]===null){
+            copiedTabOfFriendID.splice(i, 1);
+            break;
+          }
+          if(typeof(copiedTabOfFriendID[i])==="string"){
+            copiedTabOfFriendID[i] = {id:copiedTabOfFriendID[i], accepted:undefined}
+          }
+        //  console.log(copiedTabOfFriendID[i])
+          if(copiedTabOfFriendID[i].id === this.props.accountState.account.id){
+            newTabOfFriendID.push({user:this.props.accountState.account, accepted:copiedTabOfFriendID[i].accepted});
+            this.setState({acceptedByMe:copiedTabOfFriendID[i].accepted})
+            console.log(copiedTabOfFriendID[i].accepted)
             copiedTabOfFriendID.splice(i, 1)
+
           }else{
+
             for (var j = 0; j < this.props.accountState.friends.length; j++) {
-              if(this.props.accountState.friends[j].id === copiedTabOfFriendID[i]){
-                newTabOfFriendID.push(this.props.accountState.friends[j])
-                copiedTabOfFriendID.splice(i, 1)
+              if(copiedTabOfFriendID[i] !== undefined && this.props.accountState.friends[j] !== undefined){
+                if(this.props.accountState.friends[j].id === copiedTabOfFriendID[i].id){
+                  newTabOfFriendID.push({user:this.props.accountState.friends[j],accepted:copiedTabOfFriendID[i].accepted})
+                  copiedTabOfFriendID.splice(i, 1)
+                }
               }
+              //console.log(this.props.accountState.friends[j].id)
+
             }
           }
         }
 
+        console.log("here")
+        console.log(copiedTabOfFriendID.length)
+
         if(copiedTabOfFriendID.length>0){
-          API.getUsersDataByID(copiedTabOfFriendID).then((data)=>{
-            var newFullTab = newTabOfFriendID.concat(data.data.usersData);
+          API.getUsersDataByID(copiedTabOfFriendID.map((friendObject)=>(friendObject.id))).then((data)=>{
+            var tabWithAccepted = []
+            for (var i = 0; i < data.data.usersData.length; i++) {
+              if(copiedTabOfFriendID[i] !== undefined){
+                tabWithAccepted[i]={user:data.data.usersData[i], accepted:copiedTabOfFriendID[i].accepted}
+              }else{
+                tabWithAccepted[i]={user:data.data.usersData[i], accepted:undefined}
+              }
+            }
+            var newFullTab = newTabOfFriendID.concat(tabWithAccepted);
             this.setState({[key]: newFullTab});
             //console.log(newFullTab)
           });
@@ -73,18 +102,19 @@ class BetItemComponent extends Component {
 
   }
 
-  onClick = (context) => {
+
+
+  onClick = () => {
+
     console.log(this.state)
     let betWithPlayersInfo={};
     const returnedTarget = Object.assign(betWithPlayersInfo, this.props.bet);
     betWithPlayersInfo.players1 = this.state.players1
     betWithPlayersInfo.players2 = this.state.players2
     betWithPlayersInfo.witness = this.state.witness[0]
-    //if(this.props.bet.current === true){
       this.props.setBetSelected(betWithPlayersInfo)
       this.props.setSheet()
       console.log(betWithPlayersInfo)
-    //}
 
   }
 
@@ -122,17 +152,17 @@ class BetItemComponent extends Component {
       )
     }else{
       return(
-        <div className="BetItem" style={{backgroundColor:this.props.bet.current?"white":"rgba(250,250,250,1)"}} onClick={()=>this.onClick(this)}>
+        <div className="BetItem" style={{backgroundColor:this.props.bet.current?"white":"rgba(250,250,250,1)"}} onClick={()=>this.onClick()}>
           <div style={{display:"flex", flexDirection:"row", justifyContent:"flex-start",alignItem:"center",textAlign:"center", paddingTop:10, paddingBottom:10}}>
             <div style={{width:70, height:70, position:"relative"}}>
               {this.state.players1.length>0 ?
-                  <img width={50} height={50} src={this.state.players1[0].imageProfil} style={{position:"absolute", top:0, left:0, cursor:"pointer", borderWidth:0, borderStyle:"solid", borderRadius:"50%"}}/>
+                  <img width={50} height={50} src={this.state.players1[0].user.imageProfil} style={{position:"absolute", top:0, left:0, cursor:"pointer", borderWidth:0, borderStyle:"solid", borderRadius:"50%"}}/>
                   :
                   <div style={{width:50, height:50, backgroundColor:"red"}}>
                   </div>
               }
               {this.state.players2.length>0 ?
-                  <img width={50} height={50} src={this.state.players2[0].imageProfil} style={{position:"absolute", top:20, left:20, cursor:"pointer", borderWidth:0, borderStyle:"solid", borderRadius:"50%"}}/>
+                  <img width={50} height={50} src={this.state.players2[0].user.imageProfil} style={{position:"absolute", top:20, left:20, cursor:"pointer", borderWidth:0, borderStyle:"solid", borderRadius:"50%"}}/>
                   :
                   <div style={{width:50, height:50, backgroundColor:"red"}}>
                   </div>
@@ -144,6 +174,7 @@ class BetItemComponent extends Component {
               <div style={{fontSize:10, color:this.props.bet.current?"rgba(150,150,150,1)":"rgba(210,210,210,1)"}}>{"create : " + this.props.bet.creation}</div>
               <div style={{fontSize:10, color:this.props.bet.current?"rgba(150,150,150,1)":"rgba(210,210,210,1)"}}>{"expiration : " + this.props.bet.expiration}</div>
             </div>
+
             {this.props.bet.current?
               <div style={{position:"absolute", width:30, height:30, top:25, right:10, backgroundImage:"url("+ require('../Assets/images/right.png') +")", backgroundSize:"cover"}}>
               </div>
