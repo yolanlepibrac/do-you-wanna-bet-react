@@ -14,16 +14,17 @@ import { getUserFriends } from "../Actions/index";
 import { getUserBets } from "../Actions/index";
 import { getUserWitnessOf } from "../Actions/index";
 
+import { bindActionCreators } from "redux";
+
 function mapDispatchToProps(dispatch) {
-  return {
-    changeAccountState: (userData) => dispatch(changeAccountState(userData)),
-    getUserBets: (tabOfBets) => dispatch(getUserBets(tabOfBets)),
-    getUserFriends: (tabOfFriends) => dispatch(getUserFriends(tabOfFriends)),
-    getUserWitnessOf: (tabOfWitnessOf) => dispatch(getUserWitnessOf(tabOfWitnessOf)),
-    displayLoading: (boolean) => dispatch(displayLoading(boolean)),
-    connectAccount: (boolean) => dispatch(connectAccount(boolean)),
-    accountStateRedux:dispatch.accountStateRedux,
-  };
+  return bindActionCreators({
+	    changeAccountState,
+	    getUserBets,
+	    getUserFriends,
+	    getUserWitnessOf,
+	    displayLoading,
+	    connectAccount,
+	   },dispatch); 
 };
 
 
@@ -31,7 +32,6 @@ export class LoginComponent extends React.Component {
 
     constructor(props) {
         super(props);
-        this.dataStored = 0;
         this.state = {
             email : "",
             password: "",
@@ -40,21 +40,19 @@ export class LoginComponent extends React.Component {
             betsStored : false,
             witnessOfStored:false,
         }
-        this.handleChange.bind(this);
-        this.send.bind(this);
 
     }
 
 
 
-  send = (event, context) => {
-      if(this.state.email.length === 0){
-          return;
-      }
-      if(this.state.password.length === 0){
-          return;
-      }
-      this.props.login(this.state.email, this.state.password)
+  send = () => {
+    if(this.state.email.length === 0){
+        return;
+    }
+    if(this.state.password.length === 0){
+        return;
+    }
+    this.props.login(this.state.email, this.state.password)
   }
 
   handleChange = event => {
@@ -83,7 +81,7 @@ export class LoginComponent extends React.Component {
                   <FormControl  onChange={this.handleChange} type="password"/>
                 </FormGroup>
                 <Button
-                  onClick={(event) => this.send(event, this)}
+                  onClick={this.send}
                   block
                   bsSize="small"
                   type="submit"

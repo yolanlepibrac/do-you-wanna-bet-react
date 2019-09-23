@@ -17,6 +17,9 @@ export default {
     signup : function(send){
         return axios.post(burl + '/user/signup',send,{headers: headers})
     },
+    updatePassword: function(id, oldPassword, newPassword) {
+        return axios.post(burl + '/user/updatePassword',{'id' : id, 'oldPassword' : oldPassword, 'newPassword' : newPassword, },{headers: headers})
+    },
     searchFriends: function(searchedText){
         return axios.post(burl + '/user/searchFriends',{'userName':searchedText},{headers: headers})
     },
@@ -58,8 +61,8 @@ export default {
     newEmail:function(props, email){
       return axios.post(burl + '/user/newEmail',{'updatedFields' : props,'email' : email,},{headers: headers})
     },
-    setWinner:function(bet, win){
-      return axios.post(burl + '/user/setWinner',{'bet' : bet,'win' : win,},{headers: headers})
+    setWinner:function(bet, win, increment){
+      return axios.post(burl + '/user/setWinner',{'bet' : bet,'win' : win, 'increment':increment },{headers: headers})
     },
     acceptBet:function(userData, bet, accepted){
       return axios.post(burl + '/user/acceptBet',{"userID":userData.id, "betID":bet.id, "accepted":accepted },{headers: headers})

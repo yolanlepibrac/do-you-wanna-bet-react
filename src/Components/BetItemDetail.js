@@ -57,19 +57,19 @@ class BetItemDetailComponent extends Component {
         })
       }
     }
-    if(this.props.bet.witness.user.id === this.props.accountState.account.id){
+    if(this.props.bet.playersDetail.witness.user.id === this.props.accountState.account.id){
       this.setState({judingAllow : true})
     }
 
     let accepted = undefined;
-    for (var i = 0; i < this.props.bet.players1.length; i++) {
-      if(this.props.bet.players1[i].user.id = this.props.accountState.account.id){
-        accepted = this.props.bet.players1[i].user.accepted
+    for (var i = 0; i < this.props.bet.playersDetail.players1.length; i++) {
+      if(this.props.bet.playersDetail.players1[i].user.id = this.props.accountState.account.id){
+        accepted = this.props.bet.playersDetail.players1[i].user.accepted
       }
     }
-    for (var i = 0; i < this.props.bet.players2.length; i++) {
-      if(this.props.bet.players2[i].user.id = this.props.accountState.account.id){
-        accepted = this.props.bet.players2[i].user.accepted
+    for (var i = 0; i < this.props.bet.playersDetail.players2.length; i++) {
+      if(this.props.bet.playersDetail.players2[i].user.id = this.props.accountState.account.id){
+        accepted = this.props.bet.playersDetail.players2[i].user.accepted
       }
     }
     this.setState({accepted:accepted})
@@ -83,11 +83,22 @@ class BetItemDetailComponent extends Component {
   }
 
   submitWinner = () => {
-    var context = this;
+    let bet = this.props.bet
+    for (var i = 0; i <bet.players1.length; i++) {
+      if(typeof bet.players1[i] === "string"){
+        bet.players1[i] = {id: bet.players1[i], accepted:undefined}
+      }
+    }
+    for (var i = 0; i <bet.players2.length; i++) {
+      if(typeof bet.players2[i] === "string"){
+        bet.players2[i] = {id: bet.players2[i], accepted:undefined}
+      }
+    }
     if(this.state.judgmentMade){
-        console.log(this.props.bet)
-        API.setWinner(this.props.bet, this.state.win).then(function(data){
-          context.props.updtateWitnessOf(data.data.bet);
+        console.log(bet)
+        API.setWinner(bet, this.state.win, this.props.bet.current).then((data)=>{
+          console.log(data.data)
+          this.props.updtateWitnessOf(data.data.bet);
         })
       }
       this.setState({
@@ -201,8 +212,8 @@ class BetItemDetailComponent extends Component {
 
           <div style={{width:"100vw", textAlign:"left", color:"black", fontSize:15, display:"flex", justifyContent:"space-between", alignItems:"center",  paddingLeft:20, paddingRight:20, height:80}}>
             <div style={{display:"flex", flexDirection:"column", justifyContent:"space-between", alignItems:"flex-start"}}>
-              {this.props.bet.witness ?
-                <strong style={{height:20, display:"flex", alignItems:"center"}}>{"Judge : " + this.props.bet.witness.user.userName}</strong>
+              {this.props.bet.playersDetail.witness ?
+                <strong style={{height:20, display:"flex", alignItems:"center"}}>{"Judge : " + this.props.bet.playersDetail.witness.user.userName}</strong>
                 :null
               }
               <div style={{height:20, display:"flex", alignItems:"center"}}>{"creation : " + this.props.bet.creation}</div>
@@ -213,9 +224,9 @@ class BetItemDetailComponent extends Component {
                 <div style={{height:20, display:"flex", alignItems:"center"}}>status : finished</div>
               }
             </div>
-            {this.props.bet.witness ?
+            {this.props.bet.playersDetail.witness ?
               <div style={{display:"flex", flexDirection:"column", justifyContent:"space-between", alignItems:"center", width:70, backgroundSize:"cover"}}>
-                <div  style={{cursor:"pointer", borderWidth:0, borderStyle:"solid", borderRadius:"50%", border:"1px solid rgba(155,155,155,0.4)", width:70, height:70, backgroundImage:"url(" + this.props.bet.witness.user.imageProfil + ")", backgroundSize:"cover"}}></div>
+                <div  style={{cursor:"pointer", borderWidth:0, borderStyle:"solid", borderRadius:"50%", border:"1px solid rgba(155,155,155,0.4)", width:70, height:70, backgroundImage:"url(" + this.props.bet.playersDetail.witness.user.imageProfil + ")", backgroundSize:"cover"}}></div>
               </div>
               :null
             }
@@ -229,7 +240,7 @@ class BetItemDetailComponent extends Component {
             <div style={{display:"flex", flexDirection:"row", justifyContent:"space-between", width:"100%", padding:10, height:300}}>
               <div style={{display:"flex", flexDirection:"column", justifyContent:"flex-start", alignItem:"center", backgroundColor:"rgba(245,245,245,1)", width:"100%", overflow:"auto", marginRight:5, boxShadow:"0px 0px 5px 1px "+ this.state.shadowPlayer1}}
               onClick={this.setWin}>
-                {this.props.bet.players1.map((player)=>
+                {this.props.bet.playersDetail.players1.map((player)=>
                     <div style={{display:"flex", width:"100%", padding:10}}>
                       <img width={50} height={50} src={player.user.imageProfil} style={{cursor:"pointer", borderWidth:0, borderStyle:"solid", borderRadius:"50%"}}/>
                       <div style={{height:50, display:"flex", alignItems:"center", justifyContent:"center", width:"100%"}}>{player.user.userName}</div>
@@ -238,7 +249,7 @@ class BetItemDetailComponent extends Component {
               </div>
               <div style={{display:"flex", flexDirection:"column", justifyContent:"flex-start", alignItem:"center", backgroundColor:"rgba(245,245,245,1)", width:"100%", overflow:"auto", marginLeft:5, boxShadow:"0px 0px 5px 1px "+ this.state.shadowPlayer2}}
               onClick={this.setLoose}>
-                {this.props.bet.players2.map((player)=>
+                {this.props.bet.playersDetail.players2.map((player)=>
                   <div style={{display:"flex", width:"100%", padding:10}}>
                     <img width={50} height={50} src={player.user.imageProfil} style={{cursor:"pointer", borderWidth:0, borderStyle:"solid", borderRadius:"50%"}}/>
                     <div style={{height:50, display:"flex", alignItems:"center", justifyContent:"center", width:"100%"}}>{player.user.userName}</div>

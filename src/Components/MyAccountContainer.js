@@ -48,6 +48,10 @@ class MyAccountContainerComponent extends React.Component {
       numberOfBetsFinished:0,
       account:this.props.accountState.account,
       toggleChangeAccountState:false,
+      oldPassword : "",
+      oldCPassword : "",
+      newPassword : "",
+      changePasswordOpen : false,
     };
   }
 
@@ -141,10 +145,7 @@ class MyAccountContainerComponent extends React.Component {
 
   }
 
-  changePassword = () => {
-    alert("not available now")
-    console.log(this.props.accountState)
-  }
+
 
 
   disconnect = () => {
@@ -196,6 +197,30 @@ class MyAccountContainerComponent extends React.Component {
     this.setState({
       toggleChangeAccountState : !this.state.toggleChangeAccountState
     })
+  }
+
+  changePassword = () => {
+    this.setState({changePasswordOpen : !this.state.changePasswordOpen})
+  }
+
+  ValidateChangePassword = () => {
+    this.setState({changePasswordOpen : false})
+    console.log(this.state.oldPassword)
+    console.log(this.state.oldCPassword)
+    console.log(this.state.newPassword)
+    if(this.state.oldPassword === "" || this.state.oldPassword === undefined || this.state.oldPassword !== this.state.oldCPassword || this.state.newPassword === ""){
+      return
+    }else{
+      API.updatePassword(this.props.accountState.account.id, this.state.oldPassword, this.state.newPassword).then((data) => {
+        console.log(data.data)
+      })
+    }
+  }
+
+  handleChange = event => {
+    this.setState({
+      [event.target.id]: event.target.value
+    });
   }
 
 
@@ -319,6 +344,28 @@ class MyAccountContainerComponent extends React.Component {
                 </div>
               </div>
             </div>
+
+            {this.state.changePasswordOpen ?
+              <div>
+                <div onClick={this.changePassword}>CANCEL
+                </div>
+                <div controlId="oldPassword" bsSize="small">
+                  <div>Password</div>
+                  <input id="oldPassword" value={this.state.oldPassword} onChange={this.handleChange} type="password"/>
+                </div>
+                <div controlId="oldCPassword" bsSize="small">
+                  <div>Password</div>
+                  <input id="oldCPassword" value={this.state.oldCPassword} onChange={this.handleChange} type="password"/>
+                </div>
+                <div controlId="newPassword" bsSize="small">
+                  <div>Confirm Password</div>
+                  <input id="newPassword" value={this.state.newPassword} onChange={this.handleChange} type="password"/>
+                </div>
+                <div onClick={this.ValidateChangePassword}>Validate
+                </div>
+              </div>
+              :null
+            }
 
           </div>
         </div>

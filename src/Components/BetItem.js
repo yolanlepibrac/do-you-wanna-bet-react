@@ -71,9 +71,6 @@ class BetItemComponent extends Component {
           }
         }
 
-        console.log("here")
-        console.log(copiedTabOfFriendID.length)
-
         if(copiedTabOfFriendID.length>0){
           API.getUsersDataByID(copiedTabOfFriendID.map((friendObject)=>(friendObject.id))).then((data)=>{
             var tabWithAccepted = []
@@ -109,9 +106,10 @@ class BetItemComponent extends Component {
     console.log(this.state)
     let betWithPlayersInfo={};
     const returnedTarget = Object.assign(betWithPlayersInfo, this.props.bet);
-    betWithPlayersInfo.players1 = this.state.players1
-    betWithPlayersInfo.players2 = this.state.players2
-    betWithPlayersInfo.witness = this.state.witness[0]
+    betWithPlayersInfo.playersDetail = {}
+    betWithPlayersInfo.playersDetail.players1 = this.state.players1
+    betWithPlayersInfo.playersDetail.players2 = this.state.players2
+    betWithPlayersInfo.playersDetail.witness = this.state.witness[0]
       this.props.setBetSelected(betWithPlayersInfo)
       this.props.setSheet()
       console.log(betWithPlayersInfo)
