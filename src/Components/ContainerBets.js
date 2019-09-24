@@ -5,9 +5,9 @@ import { connect } from "react-redux";
 
 
 import BetItem from './BetItem';
-import Animation from "../Utils/Animation"
+import Animation from "../utils/Animation"
 import BetItemDetail from './BetItemDetail';
-import { setSheetSelected } from "../Actions/index";
+import { setSheetSelected } from "../redux/actions/index";
 
 const sizeIconMobile = 40;
 function mapDispatchToProps(dispatch) {
@@ -57,8 +57,8 @@ class MyBetContainerComponent extends Component {
     if(this.state.sheet === "betContainer"){
       return(
         <Animation.FadeInRight className="MyBetContainer">
-        {this.props.accountState.bets?
-          this.props.accountState.bets.map((bet)=><BetItem bet={bet} setSheet={this.setBetDetail} setBetSelected={this.setBetSelected}></BetItem>)
+        {this.props.bets?
+          this.props.bets.map((bet)=><BetItem bet={bet} setSheet={this.setBetDetail} setBetSelected={this.setBetSelected}></BetItem>)
           :
           null
         }

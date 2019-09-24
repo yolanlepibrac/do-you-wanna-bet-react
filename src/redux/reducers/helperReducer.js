@@ -1,4 +1,4 @@
-import { DISPLAY_LOADING, SELECT_SHEETMENU  } from "../Constants/action-types";
+import { DISPLAY_LOADING, SELECT_SHEETMENU  } from "../constants/action-types";
 
 const initialState = {
   displayLoadingRedux:false,

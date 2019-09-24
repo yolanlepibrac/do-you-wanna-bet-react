@@ -12,11 +12,11 @@ import CustomPicker from './CustomPicker';
 import PopupChooseItems from './PopupChooseItems';
 import SearchSelector from './SearchSelector';
 import ListOfItems from './ListOfItems';
-import BetMake2 from './BetMake2';
-import { setSheetSelected } from "../Actions/index";
-import { setNewBet } from "../Actions/index";
-import Animation from "../Utils/Animation"
-import API from '../Utils/API';
+import BetMake2 from './ContainerMakeBet2';
+import { setSheetSelected } from "../redux/actions/index";
+import { setNewBet } from "../redux/actions/index";
+import Animation from "../utils/Animation"
+import API from '../utils/API';
 
 const CustomInputDate = ({onChange, placeholder, value, isSecure, id, onClick, onQuit}) => (
     <div>
@@ -29,7 +29,7 @@ const CustomInputDate = ({onChange, placeholder, value, isSecure, id, onClick, o
           id={id}
           onClick={onClick}
       />
-      <div style={{zIndex:50, width:20, height:20, position:"absolute", top:0, right:0, backgroundImage:"url("+ require('../Assets/images/quit.png') +")", backgroundSize:"cover"}} onClick={onQuit}></div>
+      <div style={{zIndex:50, width:20, height:20, position:"absolute", top:0, right:0, backgroundImage:"url("+ require('../assets/images/quit.png') +")", backgroundSize:"cover"}} onClick={onQuit}></div>
     </div>
 );
 const sizeIconMobile = 40;

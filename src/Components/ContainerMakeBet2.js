@@ -14,9 +14,9 @@ import SearchSelector from './SearchSelector';
 import ListOfItems from './ListOfItems';
 import FriendItem from './FriendItem';
 import SearchSelectorUnique from './SearchSelectorUnique';
-import { setSheetSelected } from "../Actions/index";
-import { setNewBet } from "../Actions/index";
-import Animation from "../Utils/Animation"
+import { setSheetSelected } from "../redux/actions/index";
+import { setNewBet } from "../redux/actions/index";
+import Animation from "../utils/Animation"
 
 
 const sizeIconMobile = 40;
@@ -155,7 +155,7 @@ class BetMake2Component extends Component {
 
     <div className="Home2Container">
 
-        <div style={{position:"absolute", width:30, height:30, top:25, left:10, backgroundImage:"url("+ require('../Assets/images/left.png') +")", backgroundSize:"cover"}} onClick={this.goBack}>
+        <div style={{position:"absolute", width:30, height:30, top:25, left:10, backgroundImage:"url("+ require('../assets/images/left.png') +")", backgroundSize:"cover"}} onClick={this.goBack}>
         </div>
 
         <div>

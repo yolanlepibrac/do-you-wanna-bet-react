@@ -3,7 +3,7 @@ import { Button, FormGroup, FormControl, ControlLabel } from "react-bootstrap";
 import {BrowserView,MobileView,isBrowser,isMobile} from "react-device-detect";
 
 
-import { changeAccountState } from "../Actions/index";
+import { changeAccountState } from "../redux/actions/index";
 import { connect } from "react-redux";
 
 function mapDispatchToProps(dispatch) {

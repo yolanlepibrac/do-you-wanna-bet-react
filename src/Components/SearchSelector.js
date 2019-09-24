@@ -49,7 +49,7 @@ export default class SearchSelector extends React.Component {
             <img src={this.props.value.imageProfil} style={{width:this.state.height, height:this.state.height, cursor:"pointer", marginLeft:this.state.height/2, marginRight:this.state.height/2, borderRadius:"50%"}}/>
             {this.props.value.userName}
           </div>
-          <div style={{width:this.state.height/2, height:this.state.height/2, backgroundImage:this.props.active?"url("+ require('../Assets/images/moins.png') +")":"url("+ require('../Assets/images/plus.png') +")", backgroundSize:"cover"}}>
+          <div style={{width:this.state.height/2, height:this.state.height/2, backgroundImage:this.props.active?"url("+ require('../assets/images/moins.png') +")":"url("+ require('../assets/images/plus.png') +")", backgroundSize:"cover"}}>
           </div>
         </div>
       )

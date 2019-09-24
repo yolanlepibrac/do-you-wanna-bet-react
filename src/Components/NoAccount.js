@@ -36,8 +36,8 @@ export default class NoAccount extends React.Component {
       textEUserNameRegister : "",
       connexionComming : false,
       popUpComming : false,
-      imageConnexion:require('../Assets/images/connect.png'),
-      imageRegister:require('../Assets/images/register.png'),
+      imageConnexion:require('../assets/images/connect.png'),
+      imageRegister:require('../assets/images/register.png'),
     };
   }
 
@@ -48,8 +48,8 @@ export default class NoAccount extends React.Component {
     if(this.state.connexionComming === false) {
       this.setState({
         popupConnexion : this.state.popupConnexion ? false : true,
-        imageConnexion : this.state.popupConnexion ? require('../Assets/images/connect.png') : require('../Assets/images/connectActive.png'),
-        imageRegister:require('../Assets/images/register.png'),
+        imageConnexion : this.state.popupConnexion ? require('../assets/images/connect.png') : require('../assets/images/connectActive.png'),
+        imageRegister:require('../assets/images/register.png'),
         popupSignUp : false,
         email: "",
         password : "",
@@ -63,8 +63,8 @@ export default class NoAccount extends React.Component {
     if(this.state.popUpComming === false) {
       this.setState({
         popupSignUp : this.state.popupSignUp ? false : true,
-        imageRegister : this.state.popupSignUp ? require('../Assets/images/register.png') : require('../Assets/images/registerActive.png'),
-        imageConnexion:require('../Assets/images/connect.png'),
+        imageRegister : this.state.popupSignUp ? require('../assets/images/register.png') : require('../assets/images/registerActive.png'),
+        imageConnexion:require('../assets/images/connect.png'),
         popupConnexion : false,
         email: "",
         password : "",
@@ -76,8 +76,8 @@ export default class NoAccount extends React.Component {
     this.setState({
       popupConnexion : false,
       popupSignUp : false,
-      imageConnexion:require('../Assets/images/connect.png'),
-      imageRegister:require('../Assets/images/register.png'),
+      imageConnexion:require('../assets/images/connect.png'),
+      imageRegister:require('../assets/images/register.png'),
     })
   }
 

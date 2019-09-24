@@ -2,14 +2,14 @@
 import React, { Component } from 'react';
 import '../App.css';
 
-import API from '../Utils/API';
+import API from '../utils/API';
 
 import FriendItem from './FriendItem';
-import Animation from "../Utils/Animation"
+import Animation from "../utils/Animation"
 
 import { connect } from "react-redux";
 import Spinner from 'react-bootstrap/Spinner'
-import { setFriendsState } from "../Actions/index";
+import { setFriendsState } from "../redux/actions/index";
 
 const selectedColor = "rgba(123,250,155,1)";
 const nonSelectedColor = "rgba(240,240,240,1)";
@@ -106,10 +106,10 @@ class FriendsContainerComponent extends Component {
       <Animation.FadeInRight className="FriendsContainer">
         <div style={{display:"flex", width:"100%", height:40, justifyContent:"center", paddingLeft:5, paddingRight:5, marginTop:10, alignItems:"center"}}>
           <div onClick={this.leaveSearch} style={{width:70, display:"flex", justifyContent:"center", backgroundColor:this.state.searchActive?nonSelectedColor:selectedColor, borderRadius:"10px 0px 0px 10px", borderWidth:"1px 0px 1px 1px", borderStyle:"solid", borderColor:this.state.searchActive?"rgba(200,200,200,1)":"rgba(50,138,66,0.6)"}}>
-            <div style={{width:30, height:30, backgroundImage:this.state.searchActive?"url("+ require('../Assets/images/friendsSelectGrey.png') +")":"url("+ require('../Assets/images/friendsSelectGreen.png') +")", backgroundSize:"cover"}}></div>
+            <div style={{width:30, height:30, backgroundImage:this.state.searchActive?"url("+ require('../assets/images/friendsSelectGrey.png') +")":"url("+ require('../assets/images/friendsSelectGreen.png') +")", backgroundSize:"cover"}}></div>
           </div>
           <div onClick={this.setSearch} style={{width:70, display:"flex", justifyContent:"center", backgroundColor:this.state.searchActive?selectedColor:nonSelectedColor, borderRadius:"0px 10px 10px 0px", borderWidth:"1px 1px 1px 0px", borderStyle:"solid", borderColor:this.state.searchActive?"rgba(50,138,66,0.6)":"rgba(200,200,200,1)"}}>
-            <div style={{width:30, height:30, backgroundImage:this.state.searchActive?"url("+ require('../Assets/images/searchGreen.png') +")":"url("+ require('../Assets/images/searchGrey.png') +")", backgroundSize:"cover"}}></div>
+            <div style={{width:30, height:30, backgroundImage:this.state.searchActive?"url("+ require('../assets/images/searchGreen.png') +")":"url("+ require('../assets/images/searchGrey.png') +")", backgroundSize:"cover"}}></div>
           </div>
         </div>
         {this.state.searchActive ?

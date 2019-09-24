@@ -43,9 +43,9 @@ class JudgeContainerComponent extends Component {
       if(this.state.sheet === "judge"){
         return(
           <div>
-            {this.props.accountState.witnessOf.map((bet)=><BetItem bet={bet} setSheet={this.setBetDetail} setBetSelected={this.setBetSelected}/>)}
-            {this.props.accountState.witnessOf.length > 0 ?
-              null:
+            {this.props.bets ?
+              this.props.bets.map((bet)=><BetItem bet={bet} setSheet={this.setBetDetail} setBetSelected={this.setBetSelected}/>)
+              :
               <div style={{color:"black", fontSize:12, marginTop:30}}>{"You are not yet the judge of a bet"}
               </div>
             }

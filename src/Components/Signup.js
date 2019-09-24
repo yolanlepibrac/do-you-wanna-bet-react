@@ -1,15 +1,15 @@
 import React from 'react';
 import { Button, FormGroup, FormControl, ControlLabel } from "react-bootstrap";
-import API from '../Utils/API';
+import API from '../utils/API';
 import { BrowserRouter as Router, Route, Link, Switch } from "react-router-dom";
 
-import { changeAccountState } from "../Actions/index";
+import { changeAccountState } from "../redux/actions/index";
 import { connect } from "react-redux";
-import { displayLoading } from "../Actions/index";
-import { connectAccount } from "../Actions/index";
-import { getUserFriends } from "../Actions/index";
-import { getUserBets } from "../Actions/index";
-import { getUserWitnessOf } from "../Actions/index";
+import { displayLoading } from "../redux/actions/index";
+import { connectAccount } from "../redux/actions/index";
+import { getUserFriends } from "../redux/actions/index";
+import { getUserBets } from "../redux/actions/index";
+import { getUserWitnessOf } from "../redux/actions/index";
 
 
 function mapDispatchToProps(dispatch) {
@@ -101,7 +101,7 @@ export class SignupComponent extends React.Component {
                   {this.state.imageProfil ?
                     <img width="50" height="50" src={this.state.imageProfil} style={{cursor:"pointer", borderWidth:0, borderStyle:"solid", borderRadius:"10%"}}/>
                     :
-                    <img width="50" height="50" src={require('../Assets/images/connectBig.png')} style={{cursor:"pointer", borderWidth:1, borderStyle:"solid", borderRadius:"10%"}}/>
+                    <img width="50" height="50" src={require('../assets/images/connectBig.png')} style={{cursor:"pointer", borderWidth:1, borderStyle:"solid", borderRadius:"10%"}}/>
                   }
                 </label>
                 <input id="file-input" type="file" onChange={(e)=>this._handleImageChange(e, this)} style={{display: "none"}}/>

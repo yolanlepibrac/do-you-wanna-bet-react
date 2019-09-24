@@ -2,13 +2,13 @@
 import React, { Component } from 'react';
 import '../App.css';
 import { connect } from "react-redux";
-import Animation from "../Utils/Animation"
-import { setSheetSelected } from "../Actions/index";
-import { setBetInactive } from "../Actions/index";
-import { setWinner } from "../Actions/index";
-import API from '../Utils/API';
-import { updtateWitnessOf } from "../Actions/index";
-import { acceptBet } from "../Actions/index";
+import Animation from "../utils/Animation"
+import { setSheetSelected } from "../redux/actions/index";
+import { setBetInactive } from "../redux/actions/index";
+import { setWinner } from "../redux/actions/index";
+import API from '../utils/API';
+import { updtateWitnessOf } from "../redux/actions/index";
+import { acceptBet } from "../redux/actions/index";
 import Spinner from 'react-bootstrap/Spinner'
 
 
@@ -203,7 +203,7 @@ class BetItemDetailComponent extends Component {
     }else{
       return(
       <Animation.FadeInRight className="BetItemDetail" style={{backgroundColor:"rgba(255,255,255,0.4)"}}>
-          <div style={{position:"absolute", width:30, height:30, top:25, left:10, backgroundImage:"url("+ require('../Assets/images/left.png') +")", backgroundSize:"cover"}} onClick={this.onClick}>
+          <div style={{position:"absolute", width:30, height:30, top:25, left:10, backgroundImage:"url("+ require('../assets/images/left.png') +")", backgroundSize:"cover"}} onClick={this.onClick}>
           </div>
           <div style={{height:70, fontSize:17, color:"black", backgroundColor:"rgba(240,240,240,1)", width:"100%", display:"flex", flexDirection:"column", alignItems:"center", justifyContent:"center"}}>
             <div>{this.props.bet.title}</div>

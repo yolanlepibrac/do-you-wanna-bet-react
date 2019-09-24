@@ -2,19 +2,20 @@ import React, { Component } from 'react';
 import './App.css';
 import { createStore } from 'redux';
 import Spinner from 'react-bootstrap/Spinner'
-import API from './Utils/API';
-import YolanHeder from './Components/YolanHeader';
-import AppContainer from './Components/AppContainer';
-import NoAccount from './Components/NoAccount';
+import API from './utils/API';
+import YolanHeder from './components/YolanHeader';
+import AppContainer from './components/AppContainer';
+import NoAccount from './components/NoAccount';
+import Utils from './utils/Utils';
 
 import { connect } from "react-redux";
 
-import { changeAccountState } from "./Actions/index";
-import { displayLoading } from "./Actions/index";
-import { getUserFriends } from "./Actions/index";
-import { getUserBets } from "./Actions/index";
-import { getUserWitnessOf } from "./Actions/index";
-import { setSheetSelected } from "./Actions/index";
+import { changeAccountState } from "./redux/actions/index";
+import { displayLoading } from "./redux/actions/index";
+import { getUserFriends } from "./redux/actions/index";
+import { getUserBets } from "./redux/actions/index";
+import { getUserWitnessOf } from "./redux/actions/index";
+import { setSheetSelected } from "./redux/actions/index";
 
 function mapDispatchToProps(dispatch) {
   return {
@@ -44,11 +45,12 @@ class AppComponent extends React.Component {
 
   componentDidMount = () => {
     if(localStorage.connected === "true" && localStorage.email.length>0 && localStorage.email !== "undefined"){
-      //this.loginAleadyConected(localStorage.email, localStorage.onglet);
+      Utils.loginAlreadyConnected(localStorage.email, localStorage.onglet, this)
     }
   }
 
   login = (email, password) => {
+    this.setState({displayLoading:true})
     var log = new Promise((resolve, reject)=>{
       API.login(email, password).then((dataCurrentUser)=>{
         console.log(dataCurrentUser)
@@ -68,51 +70,12 @@ class AppComponent extends React.Component {
       })
       localStorage.setItem("connected" , true)
       localStorage.setItem("email" , email)
+    }).catch((error)=>{
+      console.log(error);
+      this.setState({displayLoading:false})
     })
   }
 
-  loginAleadyConected = (email, onglet) => {
-    console.log(email);
-    console.log(onglet);
-    this.setState({displayLoading:true})
-    API.getUserDataByEmail(email).then((dataCurrentUser)=>{
-      console.log(dataCurrentUser)
-      if(dataCurrentUser.status != 200 ){
-        this.setState({
-          impossibleToConnect : true,
-          messageError: "sorry we did not find you account, check your connexion",
-          displayLoading:false,
-        })
-      }
-      this.props.changeAccountState(dataCurrentUser.data.userData);
-      API.getUsersDataByID(dataCurrentUser.data.userData.friends).then((dataFriends)=>{
-        console.log(dataFriends.data.usersData)
-        this.props.getUserFriends(dataFriends.data.usersData);
-        API.getBetsDataByID(dataCurrentUser.data.userData.bets).then((dataBets)=>{
-          console.log(dataBets.data.bets)
-          this.props.getUserBets(dataBets.data.bets);
-          API.getUsersDataByID(dataCurrentUser.data.userData.witnessOf).then((dataWitnessOf)=>{
-            console.log(dataWitnessOf.data.usersData)
-            this.props.getUserWitnessOf(dataWitnessOf.data.usersData);
-            this.setState({
-              displayLoading:false,
-              onglet : onglet,
-              connected:true,
-              email:email,
-            })
-            localStorage.setItem("connected" , true)
-            localStorage.setItem("email" , email)
-          });
-        });
-      });
-    }).catch(error => {
-      this.setState({
-        impossibleToConnect : true,
-        messageError: "the server can not be reached. Please, check your connexion !",
-        displayLoading:false,
-      })
-    });
-  }
 
 
       signUp = (email, userName, imageProfil, password, cpassword) => {
@@ -228,7 +191,7 @@ class AppComponent extends React.Component {
                 :
                 <div style={{width:"100vw"}}>
                   <NoAccount login={this.login} register={this.signUp}/>
-                  <img src={require('./Assets/images/betOnWhite.png')} alt="logo" style={{position:"absolute", left:0, width:"100vw", top:100, zIndex:4}}/>
+                  <img src={require('./assets/images/betOnWhite.png')} alt="logo" style={{position:"absolute", left:0, width:"100vw", top:100, zIndex:4}}/>
                 </div>
               }
               {this.state.impossibleToConnect ?

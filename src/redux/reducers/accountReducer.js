@@ -1,4 +1,4 @@
-import { SET_ACCOUNTSTATE, CONNECT, SET_NEW_BET, SET_BET_SELECTED, SET_BET_INACTIVE, SET_WINNER, SET_FRIENDSSTATE, GET_USERBETS, GET_USERFRIENDS, RESET_ACCOUNTSTATE, GET_USERWITNESSOF, UPDATE_WITNESSOF, ACCEPT_BET  } from "../Constants/action-types";
+import { SET_ACCOUNTSTATE, CONNECT, SET_NEW_BET, SET_BET_SELECTED, SET_BET_INACTIVE, SET_WINNER, SET_FRIENDSSTATE, GET_USERBETS, GET_USERFRIENDS, RESET_ACCOUNTSTATE, GET_USERWITNESSOF, UPDATE_WITNESSOF, ACCEPT_BET  } from "../constants/action-types";
 
 const initialState = {
   connectedRedux:false,
@@ -229,7 +229,7 @@ function accountReducer(state = initialState, action) {
           ...state,
           accountState: newAccountState
         }
-        console.log(action.tabOfWitnessOf)
+        //console.log(newAccountState.witnessOf)
       return nextState || state
     break;
 

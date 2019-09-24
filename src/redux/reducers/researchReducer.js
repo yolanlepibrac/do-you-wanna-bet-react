@@ -1,4 +1,4 @@
-import { ADD_CATEGORY, ADD_KEYWORD, RESET_CATEGORY, RESET_KEYWORD  } from "../Constants/action-types";
+import { ADD_CATEGORY, ADD_KEYWORD, RESET_CATEGORY, RESET_KEYWORD  } from "../constants/action-types";
 
 const initialState = {
   categorySelectedRedux: [],

@@ -2,16 +2,16 @@ import React, { Component } from 'react';
 
 import ItemEditProfile from './ItemEditProfile';
 import { Button, FormGroup, FormControl, ControlLabel, Dropdown, DropdownButton  } from "react-bootstrap";
-import API from '../Utils/API';
-import { displayLoading } from "../Actions/index";
+import API from '../utils/API';
+import { displayLoading } from "../redux/actions/index";
 import {BrowserView,MobileView,isBrowser,isMobile} from "react-device-detect";
 import { DropdownMenu, MenuItem, DropdownItem, DropdownToggle } from 'react-bootstrap-dropdown-menu';
 
 
-import { resetAccountState } from "../Actions/index";
-import { changeAccountState } from "../Actions/index";
+import { resetAccountState } from "../redux/actions/index";
+import { changeAccountState } from "../redux/actions/index";
 import { connect } from "react-redux";
-import { connectAccount } from "../Actions/index";
+import { connectAccount } from "../redux/actions/index";
 
 const Months = [  'janvier',  'fevrier',  'mars',  'avril',  'mai',  'juin',  'juillet',  'aout',  'septembre',  'octobre',  'novembre',  'decembre']
 const Days = [  31,  28,  31,  30,  31,  30,  31,  31,  30,  31,  30,  31]
@@ -235,7 +235,7 @@ class MyAccountContainerComponent extends React.Component {
         <div className="MyAccountContainer" style={{display:"flex", flexDirection:"column", alignItems:"center"}}>
           <div style={{height:"100%", width:"95%", marginTop:10}}>
             <h5>SETTINGS</h5>
-            <div style={{position:"absolute", top:15, right:15, width:40, height:40, backgroundImage:"url("+ require('../Assets/images/exit.png') +")", backgroundSize:"cover", borderRadius:"50%", backgroundColor:"rgba(240,240,240,1)", boxShadow:"0px 0px 3px 1px rgba(0,0,0,0.3)"}} onClick={this.disconnect}>
+            <div style={{position:"absolute", top:15, right:15, width:40, height:40, backgroundImage:"url("+ require('../assets/images/exit.png') +")", backgroundSize:"cover", borderRadius:"50%", backgroundColor:"rgba(240,240,240,1)", boxShadow:"0px 0px 3px 1px rgba(0,0,0,0.3)"}} onClick={this.disconnect}>
             </div>
 
 
@@ -268,7 +268,7 @@ class MyAccountContainerComponent extends React.Component {
                         {this.props.accountState.account.imageProfil ?
                           <img width="160" height="160" src={this.props.accountState.account.imageProfil} style={{cursor:"pointer", borderWidth:0, borderStyle:"solid", borderRadius:"10%", borderWidth:this.state.toggleChangeAccountState?1:0, borderStyle:"solid", borderColor:"rgba(100,100,100,1)"}}/>
                           :
-                          <img width="160" height="160" src={require('../Assets/images/connectBig.png')} style={{cursor:"pointer", borderWidth:1, borderStyle:"solid", borderRadius:"10%", borderWidth:this.state.toggleChangeAccountState?1:0, borderStyle:"solid", borderColor:"rgba(100,100,100,1)"}}/>
+                          <img width="160" height="160" src={require('../assets/images/connectBig.png')} style={{cursor:"pointer", borderWidth:1, borderStyle:"solid", borderRadius:"10%", borderWidth:this.state.toggleChangeAccountState?1:0, borderStyle:"solid", borderColor:"rgba(100,100,100,1)"}}/>
                         }
                       </label>
                       {this.state.toggleChangeAccountState ?

@@ -168,10 +168,10 @@ class FriendItemComponent extends Component {
                       </div>
                     </div>
                     {this.props.alreadyFriend ?
-                      <div style={{width:heightItem/2, height:heightItem/2, backgroundImage:"url("+ require('../Assets/images/check.png') +")", backgroundSize:"cover"}}>
+                      <div style={{width:heightItem/2, height:heightItem/2, backgroundImage:"url("+ require('../assets/images/check.png') +")", backgroundSize:"cover"}}>
                       </div>
                       :
-                      <div onClick={this.toggleFriend} style={{width:heightItem/2, height:heightItem/2, backgroundImage:"url("+ require('../Assets/images/addFriend.png') +")", backgroundSize:"cover"}}>
+                      <div onClick={this.toggleFriend} style={{width:heightItem/2, height:heightItem/2, backgroundImage:"url("+ require('../assets/images/addFriend.png') +")", backgroundSize:"cover"}}>
                       </div>
                     }
                   </div>

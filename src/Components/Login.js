@@ -1,18 +1,18 @@
 import React from 'react';
 import { Button, FormGroup, FormControl, ControlLabel } from "react-bootstrap";
-import API from '../Utils/API';
+import API from '../utils/API';
 import { BrowserRouter as Router, Route, Link, Switch } from "react-router-dom";
 import { Redirect } from 'react-router';
 import {browserHistory} from "react-router";
 import PropTypes from 'prop-types'
 
-import { changeAccountState } from "../Actions/index";
+import { changeAccountState } from "../redux/actions/index";
 import { connect } from "react-redux";
-import { displayLoading } from "../Actions/index";
-import { connectAccount } from "../Actions/index";
-import { getUserFriends } from "../Actions/index";
-import { getUserBets } from "../Actions/index";
-import { getUserWitnessOf } from "../Actions/index";
+import { displayLoading } from "../redux/actions/index";
+import { connectAccount } from "../redux/actions/index";
+import { getUserFriends } from "../redux/actions/index";
+import { getUserBets } from "../redux/actions/index";
+import { getUserWitnessOf } from "../redux/actions/index";
 
 import { bindActionCreators } from "redux";
 
@@ -24,7 +24,7 @@ function mapDispatchToProps(dispatch) {
 	    getUserWitnessOf,
 	    displayLoading,
 	    connectAccount,
-	   },dispatch); 
+	   },dispatch);
 };
 
 
